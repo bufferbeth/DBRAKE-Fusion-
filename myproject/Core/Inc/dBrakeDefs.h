@@ -1,0 +1,147 @@
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//                FILE:
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// Processor:
+// TOOLS:
+// DATE:
+// CONTENTS: This file contains
+//------------------------------------------------------------------------------
+// HISTORY: This file
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+#ifndef BRAKEDEFS_H
+#define BRAKEDEFS_H
+
+#include "main.h"
+#include <stdint.h>
+
+#define TRUE 1
+#define FALSE 0
+
+
+//=========================BRAKE BOARD ======================
+// v00_01a 10 19 2020 - baseline version.
+//                      testing of motor CW and CCW.
+//===========================================================
+
+#define FWVER 0x0000016a //00_01a
+
+ 
+#define DELAY_1SEC	1000
+ 
+
+extern unsigned int schedByte; 
+#define SCHEDBYTE_ACCELEROMETER			0x0001
+
+#if REMOTEBOARD
+#define SCHEDBYTE_SCREENREFRESH			0x0002
+#else
+#define SCHEDBYTE_MOTORHLIMIT			0x0002
+#endif
+#define SCHEDBYTE_MOTORFLIMIT			0x0004
+#define SCHEDBYTE_BUTTON				0x0008
+#define SCHEDBYTE_RF433					0x0010
+#define SCHEDBYTE_ADC					0x0020
+#if BRAKEBOARD
+#define SCHEDBYTE_BRAKETASK				0x0040
+#endif
+#define SCHEDBYTE_APPSCREENKEYCHANGE	0x0080
+#define SCHEDBYTE_UPDATEPRESSURE		0x0100
+#define SCHEDBYTE_RFFSK					0x0200
+#define SCHEDBYTE_RFLORA				0x0400
+#if REMOTEBOARD
+#define SCHEDBYTE_COMMTOBRAKE			0x0800
+#endif
+#define SCHEDBYTE_COMMSUP				0x2000
+#define SCHEDBYTE_DOWNLOAD_DONE			0x4000
+
+
+typedef struct
+{
+	uint8_t VoltageInput;
+	uint8_t VoltageSupercap;
+	uint8_t ActuatorStatus;
+	#define ACTUATORSTATUS_HOMEONFAIL		0x01
+	#define ACTUATORSTATUS_EXTENDONFAIL		0x02 
+	#define ACTUATORSTATUS_HOMEOFFFAIL		0x04
+	#define ACTUATORSTATUS_EXTENDOFFFAIL	0x08
+	#define ACTUATORSTATUS_TIPERROR			0x10
+	#define ACTUATORSTATUS_BOTHLIMITSACTIVE 0x20
+	#define ACTUATORSTATUS_ENCODERFAIL		0x40
+	#define ACTUATORSTATUS_EXTENDTRIGGEREDINSETUP 0x80
+	
+	uint8_t AccelerometerStatus;
+	uint8_t BrakeState;
+	#define BRAKESTATE_COMMERROR			0x01
+	#define BRAKESTATE_BREAKAWAYTIP			0x02
+	#define BRAKESTATE_NOTSETUP				0x04
+	#define BRAKESTATE_INPUTVOLTAGEBAD      0x08
+	#define BRAKESTATE_MANUALBRAKE			0x10
+	#define BRAKESTATE_LOWSUPERCAP  		0x20
+	#define BRAKESTATE_BREAKAWAYREADY		0x40
+	#define BRAKESTATE_ERRORLOADSET			0x80  //01_28 changed
+}BRAKEDATA;
+extern BRAKEDATA brakeStatus;
+
+extern uint8_t toggle;  	
+	//-----------------------
+	//motor pins 
+#define PIN_B0_INB 	GPIO_PIN_0
+#define PIN_C4_ENA 	GPIO_PIN_4
+#define PIN_C5_INA 	GPIO_PIN_5
+#define PIN_B11_ENB GPIO_PIN_11
+#define PIN_B10_PWM GPIO_PIN_10
+#define PIN_B1_CS 	GPIO_PIN_1
+
+#define PIN_C2_LRVSTOPLTAD GPIO_PIN_2
+#define PIN_C3_RRVSTOPLTAD GPIO_PIN_3
+/*
+	#define BUTTON_SETUP			PIN_PA15
+	#define BUTTON_POWER			PIN_PA14
+	#define INPUT_BREAKAWAY_TIP		PIN_PA23
+	#define INPUT_BREAKAWAY_RING	PIN_PA22
+	
+	
+	#define FLIMIT PIN_PA21
+	#define HLIMIT PIN_PA20
+	#define ENCODER PIN_PB11
+	#define IRLEDEN PIN_PA27
+	
+	#define SUPERCAPEN	PIN_PB05
+*/
+
+#define PIN_C8_GREENLED	GPIO_PIN_8
+#define PIN_C7_REDLED	GPIO_PIN_7
+#define PIN_C6_BLUELED	GPIO_PIN_6
+#define LED_RED_ON HAL_GPIO_WritePin(GPIOC, PIN_C7_REDLED,GPIO_PIN_RESET);
+#define LED_RED_OFF HAL_GPIO_WritePin(GPIOC, PIN_C7_REDLED,GPIO_PIN_SET);
+#define LED_GREEN_ON HAL_GPIO_WritePin(GPIOC, PIN_C8_GREENLED,GPIO_PIN_RESET);
+#define LED_GREEN_OFF HAL_GPIO_WritePin(GPIOC, PIN_C8_GREENLED,GPIO_PIN_SET);
+#define LED_BLUE_ON HAL_GPIO_WritePin(GPIOC, PIN_C6_BLUELED,GPIO_PIN_RESET);
+#define LED_BLUE_OFF HAL_GPIO_WritePin(GPIOC, PIN_C6_BLUELED,GPIO_PIN_SET);
+#define LED_ALL_OFF  HAL_GPIO_WritePin(GPIOC, PIN_C6_BLUELED|PIN_C8_GREENLED|PIN_C7_REDLED,GPIO_PIN_SET);
+/*
+	#define BLUETOOTH_RESET PIN_PA09
+	#define BLUETOOTH_PROG	PIN_PA08
+	#define BLUETOOTH_TX	PIN_PA10
+	#define BLUETOOTH_RX	PIN_PA11
+*/
+
+#define APPSTATE_IDLE			0
+#define APPSTATE_TESTFORWARD	1
+#define APPSTATE_TESTREVERSE	2
+
+//-------------------------COOMON ITEMS
+
+
+
+extern uint16_t brakeHoldOffTime; 
+extern uint16_t brakeSupTime; 
+extern uint16_t wdog;
+
+extern uint16_t commSupTimer; 
+#define COMM_SUP_TIME 500   
+#define COMM_SUP_TIME_REMOTE 100
+
+
+
+#endif  /* SAMD20_XPLAINED_PRO_H_INCLUDED */

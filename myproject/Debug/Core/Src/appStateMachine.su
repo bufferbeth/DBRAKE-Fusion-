@@ -1,0 +1,3 @@
+appStateMachine.c:36:6:AppStateInit	32	static
+appStateMachine.c:48:9:AppStateGet	4	static
+appStateMachine.c:53:6:AppTask	16	static

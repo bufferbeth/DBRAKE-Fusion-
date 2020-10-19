@@ -1,0 +1,5 @@
+appMotor.c:38:6:BrakeInit	8	static
+appMotor.c:59:6:MotorInit	4	static
+appMotor.c:69:6:MotorOff	40	static
+appMotor.c:118:6:MotorCCW	32	static
+appMotor.c:156:6:MotorCW	32	static

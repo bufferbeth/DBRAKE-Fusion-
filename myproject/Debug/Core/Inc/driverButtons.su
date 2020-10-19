@@ -1,0 +1,3 @@
+driverButtons.c:60:9:ButtonChanged	16	static
+driverButtons.c:73:6:ButtonInit	4	static
+driverButtons.c:102:6:ButtonSample	4	static
